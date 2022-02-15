@@ -9,17 +9,35 @@
     <script src="./immer.umd.production.min.js"></script>
   </head>
   <body>
- 
+    <h1 id="aulas"></h1>
+    <h1 id="aluno"></h1>
     <script type="module">
       import store from './store/configureStore.js';
-      import { incrementar } from './store/contador.js';
+      import { incrementarTempo, reduzirTempo, modificarEmail } from './store/aluno.js';
+      import { completarAula, completarCurso, resetarCurso } from './store/aulas.js';
 
-      store.subscribe(() => {
-        console.log('Funcionou')
-      });
+      function render() {
+        const { aluno, aulas} = store.getState();
+        const aulasEl = document.getElementById('aulas');
+        const alunoEl = document.getElementById('aluno');
 
-      store.diuspatch();
+        alunoEl.innerText = `${aluno.nome} : ${aluno.email} : ${aluno.diasRestantes}`;
+        aulasEl.innerText = aulas.filter((aula) => aula.completa === true).length;
 
-    </script>
+
+        
+      }
+      
+      render();
+      store.subscribe(render);
+
+      store.dispatch(incrementarTempo);
+      store.dispatch(incrementarTempo);
+
+      store.dispatch(modificarEmail('jeremias@msn.com'));
+
+
+
+     </script>
   </body>
 </html>
